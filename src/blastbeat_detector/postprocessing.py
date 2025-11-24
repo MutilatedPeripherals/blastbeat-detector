@@ -5,9 +5,6 @@ from zipfile import ZipFile
 import numpy as np
 from pydub import AudioSegment
 
-base_dir = Path(__file__).parent.resolve()
-default_output_dir = f"{base_dir}/output"
-
 
 def compress_to_mp3(wav_path: Path, bitrate: str = "192k") -> Path:
     mp3_path = wav_path.with_suffix(".mp3")
@@ -23,7 +20,7 @@ def save_result(
     bass_drum_frequency: float,
     filepath: Path,
     drumtrack_path: Path,
-    output_dir: str = default_output_dir,
+    output_dir: str,
 ):
     output = {
         "blast_beats": [],

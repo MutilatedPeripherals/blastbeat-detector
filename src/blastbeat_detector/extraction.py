@@ -15,7 +15,10 @@ warnings.filterwarnings(
     "ignore",
     message=".*this function's implementation will be changed to use torchaudio.save_with_torchcodec.*",
 )
-
+warnings.filterwarnings(
+    "ignore",
+    message=".*The 'encoding' parameter is not fully supported by TorchCodec AudioEncoder.*",
+)
 
 def read_audio_file(input_file_path: Path) -> tuple[np.ndarray, np.ndarray, float]:
     y, sample_rate = librosa.load(input_file_path, mono=True)
@@ -44,7 +47,7 @@ def extract_drums(
     )
 
     if skip_cache or not extracted_drums_file_path.exists():
-        print("Extracting drums")
+        print(f"Separating drum track from \'{input_file_path}\'")
         temp_file_path = (
             input_file_path.parent
             / "htdemucs"
@@ -71,7 +74,7 @@ def extract_drums(
 
 
 if __name__ == "__main__":
-    base_dir = "/home/linomp/Downloads"
+    base_dir = Path.cwd().resolve()
 
     file_path = Path(f"{base_dir}/Dying Fetus - Subjected To A Beating.wav")
     extract_drums(file_path)

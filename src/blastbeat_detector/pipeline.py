@@ -2,8 +2,8 @@ import argparse
 import csv
 from pathlib import Path
 
-from downloading import download_from_youtube_as_mp3
-from processing import process_song
+from src.blastbeat_detector.downloading import download_from_youtube_as_mp3
+from src.blastbeat_detector.processing import process_song
 
 
 def parse_float(row, key):
