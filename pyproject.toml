@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "blastbeat_detector"
-version = "0.0.3"
+version = "0.0.4"
 authors = [
     { name = "@linomp" },
     { name = "@lmeullibre" },
@@ -12,7 +12,7 @@ authors = [
 ]
 description = "Experimental package for identifying blast-beats in songs using spectral analysis"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.9"
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
 
