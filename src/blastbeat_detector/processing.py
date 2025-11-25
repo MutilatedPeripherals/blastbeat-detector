@@ -4,10 +4,10 @@ from typing import NamedTuple
 import numpy as np
 from numpy.fft import fft
 
-from src.blastbeat_detector.downloading import download_from_youtube_as_mp3
-from src.blastbeat_detector.extraction import extract_drums
-from src.blastbeat_detector.plotting import plot_fft_with_markers
-from src.blastbeat_detector.postprocessing import save_result
+from blastbeat_detector.downloading import download_from_youtube_as_mp3
+from blastbeat_detector.extraction import extract_drums
+from blastbeat_detector.plotting import plot_fft_with_markers
+from blastbeat_detector.postprocessing import save_result
 
 
 class LabeledSection(NamedTuple):

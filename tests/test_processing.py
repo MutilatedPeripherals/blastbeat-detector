@@ -1,4 +1,4 @@
-from src.blastbeat_detector.processing import LabeledSection, identify_blastbeats
+from blastbeat_detector.processing import LabeledSection, identify_blastbeats
 
 
 def test_identify_blasts_1():
