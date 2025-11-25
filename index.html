@@ -36,21 +36,30 @@
 <h4>Blastbeat Detection Visualizer</h4>
 <div id="explainer">
     <hr>
-    <p><i><strong>Warning:</strong> This is a work in progress. The visualizer expects a ZIP file containing an audio
+    <p><i><strong>Warning:</strong> This is not a stand-alone tool. The visualizer expects a ZIP file containing an
+        audio
         file (MP3 or WAV), a JSON file with the identified blast-beat sections, and optionally a drum-only audio track.</i>
     </p>
-    <p>Expected JSON structure:</p>
+    <p><i>Expected JSON structure:</i></p>
     <pre>
     {
       "blast_beats": [
         {"start_time": 12.5, "end_time": 15.0},
-        {"start_time": 30.0, "end_time": 32.5}
+        {"start_time": 30.0, "end_time": 32.5},
+        ...
       ]
     }
     </pre>
-    <p>You can download some examples from <a
+    <p>Try this notebook to process some songs using Google's free-tier
+        GPUs: <a target="_blank"
+                 href="https://colab.research.google.com/drive/1s3fcIpFAnJWguS2-sE6LKjWVkQlOpZK1?usp=sharing">
+            <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+        </a>
+    </p>
+    <p>Or directly download some processed song examples from <a
             href="https://drive.google.com/drive/folders/1YFoxrsrBo8hl0cOYkdxCsfW_bf3CX7Al?usp=drive_link"
-            target="_blank">this Google Drive folder</a></p>
+            target="_blank">this Google Drive folder</a>
+    </p>
 </div>
 <div class="load-control">
     <input type="file" id="zipInput" accept=".zip">

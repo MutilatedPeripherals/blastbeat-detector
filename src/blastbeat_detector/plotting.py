@@ -1,18 +1,13 @@
-from pathlib import Path
-
 import matplotlib.pyplot as plt
 import numpy as np
-
-base_dir = Path(__file__).parent.resolve()
-default_output_dir = f"{base_dir}/output/img"
 
 
 def plot_waveform_with_highlights(
     time: np.ndarray,
     data: np.ndarray,
     ranges_to_highlight: list[tuple[int, int]],
-    title: str = "test",
-    output_dir=default_output_dir,
+    title: str,
+    output_dir:str,
 ):
     highlighted_time_elements = []
     highlighted_data_elements = []
@@ -75,10 +70,10 @@ def plot_fft_with_markers(
     fft_magnitude: np.ndarray,
     bass_drum_freq: float,
     snare_drum_freq: float,
+    output_dir: str,
     title: str = "identified_freqs",
     bass_drum_range: tuple[int, int] | None = None,
     snare_range: tuple[int, int] | None = None,
-    output_dir=default_output_dir,
 ):
     fig, ax = plt.subplots(1, 1, figsize=(12, 6))
 

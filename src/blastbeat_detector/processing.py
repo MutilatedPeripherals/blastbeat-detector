@@ -4,10 +4,10 @@ from typing import NamedTuple
 import numpy as np
 from numpy.fft import fft
 
-from downloading import download_from_youtube_as_mp3
-from extraction import extract_drums
-from plotting import plot_fft_with_markers
-from postprocessing import save_result
+from blastbeat_detector.downloading import download_from_youtube_as_mp3
+from blastbeat_detector.extraction import extract_drums
+from blastbeat_detector.plotting import plot_fft_with_markers
+from blastbeat_detector.postprocessing import save_result
 
 
 class LabeledSection(NamedTuple):
@@ -182,17 +182,17 @@ def process_song(
     step_size_in_seconds=0.15,
     bass_drum_range=(10, 100),
     snare_range=(170, 600),
-    min_consecutive_hits=8,
+    min_consecutive_hits=8
 ):
-    print("Separating drum track...")
+    output_dir = Path.cwd().resolve() / "output"
+    output_dir.mkdir(exist_ok=True)
+
     (time, audio_data, sample_rate), drumtrack_path = extract_drums(file_path)
     bass_drum_freq, snare_freq = identify_bass_and_snare_frequencies(
         audio_data,
         sample_rate,
         bass_drum_range,
-        snare_range,
-        # TODO: remove this when not debugging
-        # debug_song_name=file_path.stem,
+        snare_range
     )
     print(
         f"Estimated frequencies -- Bass drum: {bass_drum_freq} Hz; Snare drum: {snare_freq} Hz"
@@ -212,15 +212,12 @@ def process_song(
     blastbeat_intervals = identify_blastbeats(labeled_sections, min_consecutive_hits)
 
     save_result(
-        time, blastbeat_intervals, snare_freq, bass_drum_freq, file_path, drumtrack_path
+        time, blastbeat_intervals, snare_freq, bass_drum_freq, file_path, drumtrack_path, output_dir.as_posix()
     )
 
 
 if __name__ == "__main__":
     import argparse
-    import webbrowser
-
-    OPEN_BROWSER_AFTER_PROCESSING = True
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--file", type=str)
@@ -237,13 +234,9 @@ if __name__ == "__main__":
         success, file_path = download_from_youtube_as_mp3(args.url)
         if not success or file_path is None:
             raise RuntimeError("Failed to download the YouTube video.")
-        print(f"Downloaded file to: {file_path}")
     else:
         raise ValueError(
             "You must provide either a local file path (--file) or a url to download from YouTube (--url)"
         )
 
     process_song(file_path)
-
-    if OPEN_BROWSER_AFTER_PROCESSING:
-        webbrowser.open(f"file://{Path(__file__).parent.resolve()}/index.html")

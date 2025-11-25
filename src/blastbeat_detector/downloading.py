@@ -5,15 +5,14 @@ from pathlib import Path
 
 from yt_dlp import YoutubeDL
 
-CACHE_FILE = Path(__file__).parent / "download_cache.json"
-
 
 def download_from_youtube_as_mp3(url: str) -> tuple[bool, Path | None]:
     if not re.match(r"(https?://)?(www\.)?(youtube\.com|youtu\.be)/", url):
         raise ValueError("The provided URL is not a valid YouTube video URL.")
 
-    if CACHE_FILE.exists():
-        with open(CACHE_FILE, "r") as f:
+    cache_file = Path.cwd().resolve() / "download_cache.json"
+    if cache_file.exists():
+        with open(cache_file, "r") as f:
             cache = json.load(f)
         if url in cache:
             cached_path = Path(cache[url])
@@ -23,7 +22,7 @@ def download_from_youtube_as_mp3(url: str) -> tuple[bool, Path | None]:
     else:
         cache = {}
 
-    output_folder = Path(__file__).parent / "tmp"
+    output_folder = Path.cwd().resolve() / "tmp"
     output_folder.mkdir(exist_ok=True)
 
     temp_name = str(uuid.uuid4())
@@ -55,7 +54,7 @@ def download_from_youtube_as_mp3(url: str) -> tuple[bool, Path | None]:
                 downloaded_path.rename(final_path)
 
             cache[url] = str(final_path)
-            with open(CACHE_FILE, "w") as f:
+            with open(cache_file, "w") as f:
                 json.dump(cache, f, indent=2)
 
             return True, final_path

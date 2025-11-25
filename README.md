@@ -1,4 +1,4 @@
-# Blast beat counter
+# Blast beat detector
 
 [![Tests](https://github.com/MutilatedPeripherals/blastbeat-counter/actions/workflows/run-tests.yml/badge.svg)](https://github.com/MutilatedPeripherals/blastbeat-counter/actions/workflows/run-tests.yml)
 
@@ -38,15 +38,18 @@ And here is another one, from the ecuadorian band Curetaje:
 
 ## Demo
 
-Currently the detector is not deployed as a service because demucs requires a GPU for drum-track separation in reasonable time, and those servers aren't free...
+Currently the detector is not deployed as a service because demucs requires a GPU for drum-track separation in
+reasonable time, and those servers aren't free...
 
 But you can:
-- Try this notebook to process some songs using Google's free-tier GPUs: <a target="_blank" href="https://colab.research.google.com/drive/1s3fcIpFAnJWguS2-sE6LKjWVkQlOpZK1?usp=sharing">
+
+- Try this notebook to process some songs using Google's free-tier
+  GPUs: <a target="_blank" href="https://colab.research.google.com/drive/1s3fcIpFAnJWguS2-sE6LKjWVkQlOpZK1?usp=sharing">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-</a>
+  </a>
 
 - Or just directly download examples of processed songs
-from [here](https://drive.google.com/drive/folders/1YFoxrsrBo8hl0cOYkdxCsfW_bf3CX7Al)
+  from [here](https://drive.google.com/drive/folders/1YFoxrsrBo8hl0cOYkdxCsfW_bf3CX7Al)
 
 And then upload the results to the [visualizer](https://mutilatedperipherals.github.io/blastbeat-counter/):
 
@@ -70,25 +73,26 @@ apt-get install ffmpeg
 
 ### Specify the input files & run the code
 
-1. Create a `csv` file to pass as input to the `pipeline.py` file.  
+1. Create a `csv` file to pass as input to the `pipeline.py` file.
 
-    The only mandatory column is `src`, with the file paths of the songs to analyze. Youtube URLs are also supported on a best-effort basis (uses `yt-dlp` to download the audio). 
+   The only mandatory column is `src`, with the file paths of the songs to analyze. Youtube URLs are also supported on a
+   best-effort basis (uses `yt-dlp` to download the audio).
 
-    Example:
+   Example:
 
     ```csv
     src
     /home/linomp/Downloads/CURETAJE - Arutam.mp3
     https://youtu.be/dQw4w9WgXcQ?si=J-UoAhM54KQGR6eW
     ```
-    
+
     <details>
     <summary>Additional fields (advanced)</summary>
     Other fields are supported for debugging & development, with the most important one being `step_size_in_seconds`, which determines the size of the segments on which the song is split & analized (default value: 0.15s). 
-    
-    In `pipeline.py` you can see all the configurable fields. If left blank or unspecified, defaults will be used. 
 
-    Here is an example specifying an extra field:
+   In `pipeline.py` you can see all the configurable fields. If left blank or unspecified, defaults will be used.
+
+   Here is an example specifying an extra field:
 
     ```csv
     src,step_size_in_seconds
