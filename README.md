@@ -44,7 +44,7 @@ reasonable time, and those servers aren't free...
 But you can:
 
 - Try this notebook to process some songs using Google's free-tier
-  GPUs: <a target="_blank" href="https://colab.research.google.com/drive/1s3fcIpFAnJWguS2-sE6LKjWVkQlOpZK1?usp=sharing">
+  GPUs: <a target="_blank" href="https://colab.research.google.com/gist/linomp/9a3cc6bfeda5ef3a09358ea29cc5363c/blastbeat_detector_notebook.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
   </a>
 
