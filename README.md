@@ -106,3 +106,12 @@ apt-get install ffmpeg
     ```bash
     pipeline.py ./songs.csv
     ```
+
+## News
+The Blast Beat Detector was presented in the [6th meetup](https://pythonleiden.nl/meeting-2025-11-13.html)  of the Python Leiden user group 🇳🇱! --> [**Slides here**](https://docs.google.com/presentation/d/1iJMSQG28AYHlkn9QP00kx2yHenX1uifUPS29b-Rtshc/edit?usp=sharing) 
+
+<!-- <img width="30%" alt="image-4" src="https://github.com/user-attachments/assets/5088f77c-f052-46a4-b2e5-d5ebf886e6e6" /> -->
+<img width="50%" alt="image-3" src="https://github.com/user-attachments/assets/5604da35-c72f-4f3c-8673-e84624059460" />
+
+
+
