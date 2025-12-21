@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./assets/favicon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlastViz</title>
     <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
@@ -9,39 +12,138 @@
     <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/regions.min.js"></script>
     <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/spectrogram.min.js"></script>
     <style>
-        body { font-family: sans-serif; margin: 20px; }
-        #controls { margin-top: 10px; margin-bottom: 10px; display: none; padding-left: 0px; }
-        #zipInput { margin-right: 10px; }
-        #waveform, #spectrogram { width: 100%; height: 150px; margin-top: 10px; margin-bottom: 10px; }
-        #track-info { margin-top: 10px; font-style: italic; color: #444; font-size: 0.9em; }
-        #currentTime { margin-top: 10px; font-family: monospace; font-size: 2em; }
-        #seenCount { margin-top: 10px; margin-bottom: 10px; font-weight: bold; display: inline-block; }
-        .radio-group { margin-top: 10px; margin-bottom: 10px; }
-        .load-control { margin-top: 5px; margin-bottom: 15px; }
-        #mobile-controls { display: none; margin-top: 10px; margin-bottom: 15px; gap: 10px; justify-content: start; }
-        @media (max-width: 768px) { #mobile-controls { display: flex; } }
-        #loadingWaveform, #loadingSpectrogram { display:none; font-style:italic; color:#666; text-align: center;}
-        @keyframes blastbeatFlash {
-            0% { color: green; transform: scale(1.1); }
-            75% { color: inherit; transform: scale(1.01); }
-            100% { color: inherit; transform: scale(1); }
+        body {
+            font-family: sans-serif;
+            margin: 20px;
         }
+
+        #controls {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            display: none;
+            padding-left: 0px;
+        }
+
+        #zipInput {
+            margin-right: 10px;
+        }
+
+        #waveform,
+        #spectrogram {
+            width: 100%;
+            height: 150px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        #track-info {
+            margin-top: 10px;
+            font-style: italic;
+            color: #444;
+            font-size: 0.9em;
+        }
+
+        #currentTime {
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 2em;
+        }
+
+        #seenCount {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .radio-group {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .load-control {
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
+        #mobile-controls {
+            display: none;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            gap: 10px;
+            justify-content: start;
+        }
+
+        @media (max-width: 768px) {
+            #mobile-controls {
+                display: flex;
+            }
+        }
+
+        #loadingWaveform,
+        #loadingSpectrogram {
+            display: none;
+            font-style: italic;
+            color: #666;
+            text-align: center;
+        }
+
+        @keyframes blastbeatFlash {
+            0% {
+                color: green;
+                transform: scale(1.1);
+            }
+
+            75% {
+                color: inherit;
+                transform: scale(1.01);
+            }
+
+            100% {
+                color: inherit;
+                transform: scale(1);
+            }
+        }
+
         .blastbeat-animate {
             animation: blastbeatFlash 0.25s ease;
         }
+
+        .github-corner {
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 1000
+        }
+
+        .github-corner svg {
+            fill: #151513;
+            color: #fff
+        }
     </style>
 </head>
+
 <body>
-<h2>BlastViz</h2>
-<h4>Blastbeat Detection Visualizer</h4>
-<div id="explainer">
-    <hr>
-    <p><i><strong>Warning:</strong> This is not a stand-alone tool. The visualizer expects a ZIP file containing an
-        audio
-        file (MP3 or WAV), a JSON file with the identified blast-beat sections, and optionally a drum-only audio track.</i>
-    </p>
-    <p><i>Expected JSON structure:</i></p>
-    <pre>
+    <h2>BlastViz</h2>
+    <h4>Blastbeat Detection Visualizer</h4>
+    <a href="https://github.com/MutilatedPeripherals/blastbeat-detector" class="github-corner"
+        aria-label="View source on GitHub" target="_blank">
+        <svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true">
+            <path d="M0 0h250v250" fill="#151513" />
+            <path
+                d="M128 109c-15-4-18-11-18-11s-4-7-10-9c-5-2 0-3 0-3 6 0 11 6 11 6 5 9 14 6 17 5c1-4 3-6 5-8c-12-1-24-6-24-27c0-6 2-11 6-15c-1-2-3-8 1-16c0 0 5-2 16 6c5-1 10-2 15-2s10 1 15 2c11-8 16-6 16-6c4 8 2 14 1 16c4 4 6 9 6 15c0 21-12 26-24 27c3 2 6 7 6 14v21"
+                fill="#fff" />
+        </svg>
+    </a>
+    <div id="explainer">
+        <hr>
+        <p><i><strong>Warning:</strong> This is not a stand-alone tool. The visualizer expects a ZIP file containing an
+                audio
+                file (MP3 or WAV), a JSON file with the identified blast-beat sections, and optionally a drum-only audio
+                track.</i>
+        </p>
+        <p><i>Expected JSON structure:</i></p>
+        <pre>
     {
       "blast_beats": [
         {"start_time": 12.5, "end_time": 15.0},
@@ -50,208 +152,209 @@
       ]
     }
     </pre>
-    <p>Try this notebook to process some songs using Google's free-tier
-        GPUs: <a target="_blank"
-                 href="https://colab.research.google.com/gist/linomp/9a3cc6bfeda5ef3a09358ea29cc5363c/blastbeat_detector_notebook.ipynb">
-            <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-        </a>
-    </p>
-    <p>Or directly download some processed song examples from <a
-            href="https://drive.google.com/drive/folders/1YFoxrsrBo8hl0cOYkdxCsfW_bf3CX7Al?usp=drive_link"
-            target="_blank">this Google Drive folder</a>
-    </p>
-</div>
-<div class="load-control">
-    <input type="file" id="zipInput" accept=".zip">
-</div>
-<hr>
-<div class="radio-group">
-    <label><input type="radio" name="trackType" value="full" checked> Full Band</label>
-    <label><input type="radio" name="trackType" value="drums"> Drums Only</label>
-</div>
-<hr>
-<div id="track-info">
-    <span id="audioPath"></span> <span id="snareFreq"></span> <span id="bassdrumFreq"></span>
-</div>
-<div id="controls">
-    <div id="seenCount">Blastbeat count: 0</div>
-    <div id="currentTime">0:00:000</div>
-    <div id="mobile-controls">
-        <button id="playPauseBtn">Play/Pause</button>
-        <button id="zoomInBtn">Zoom In</button>
-        <button id="zoomOutBtn">Zoom Out</button>
+        <p>Try this notebook to process some songs using Google's free-tier
+            GPUs: <a target="_blank"
+                href="https://colab.research.google.com/gist/linomp/9a3cc6bfeda5ef3a09358ea29cc5363c/blastbeat_detector_notebook.ipynb">
+                <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" />
+            </a>
+        </p>
+        <p>Or directly download some processed song examples from <a
+                href="https://drive.google.com/drive/folders/1YFoxrsrBo8hl0cOYkdxCsfW_bf3CX7Al?usp=drive_link"
+                target="_blank">this Google Drive folder</a>
+        </p>
     </div>
-</div>
-<div id="waveform" title="Space bar: play/pause -- Mouse wheel: zoom in/out"></div>
-<div id="loadingWaveform">Rendering waveform...</div>
-<div id="spectrogram"></div>
-<div id="loadingSpectrogram">Rendering spectrogram...</div>
-<script>
-    let wavesurfer = null;
-    let audioReady = false;
-    let currentZipFile = null;
-    let zoomLevel = 0;
+    <div class="load-control">
+        <input type="file" id="zipInput" accept=".zip">
+    </div>
+    <hr>
+    <div class="radio-group">
+        <label><input type="radio" name="trackType" value="full" checked> Full Band</label>
+        <label><input type="radio" name="trackType" value="drums"> Drums Only</label>
+    </div>
+    <hr>
+    <div id="track-info">
+        <span id="audioPath"></span> <span id="snareFreq"></span> <span id="bassdrumFreq"></span>
+    </div>
+    <div id="controls">
+        <div id="seenCount">Blastbeat count: 0</div>
+        <div id="currentTime">0:00:000</div>
+        <div id="mobile-controls">
+            <button id="playPauseBtn">Play/Pause</button>
+            <button id="zoomInBtn">Zoom In</button>
+            <button id="zoomOutBtn">Zoom Out</button>
+        </div>
+    </div>
+    <div id="waveform" title="Space bar: play/pause -- Mouse wheel: zoom in/out"></div>
+    <div id="loadingWaveform">Rendering waveform...</div>
+    <div id="spectrogram"></div>
+    <div id="loadingSpectrogram">Rendering spectrogram...</div>
+    <script>
+        let wavesurfer = null;
+        let audioReady = false;
+        let currentZipFile = null;
+        let zoomLevel = 0;
 
-    function applyZoom() {
-        if (wavesurfer) {
-            wavesurfer.zoom(zoomLevel);
+        function applyZoom() {
+            if (wavesurfer) {
+                wavesurfer.zoom(zoomLevel);
+            }
         }
-    }
 
-    function handleWheelZoom(e) {
-        if (!wavesurfer) return
-        e.preventDefault();
-        zoomLevel += e.deltaY < 0 ? 10 : -10;
-        zoomLevel = Math.max(0, Math.min(zoomLevel, 200));
-        applyZoom();
-    }
-
-    function initWaveSurfer(audioFile, intervals) {
-        let seenCount = 0;
-        let streak = 0;
-        let lastStreakChange = 0;
-
-        if (wavesurfer) {
-            wavesurfer.destroy()
-            document.getElementById('waveform').innerHTML = ""
-            document.getElementById('spectrogram').innerHTML = ""
-            document.getElementById('currentTime').textContent = "0:00:000"
-            document.getElementById('seenCount').textContent = "Blastbeat count: 0"
+        function handleWheelZoom(e) {
+            if (!wavesurfer) return
+            e.preventDefault();
+            zoomLevel += e.deltaY < 0 ? 10 : -10;
+            zoomLevel = Math.max(0, Math.min(zoomLevel, 200));
+            applyZoom();
         }
 
-        const lw = document.getElementById('loadingWaveform');
-        const ls = document.getElementById('loadingSpectrogram');
-        lw.style.display = 'block';
-        ls.style.display = 'block';
+        function initWaveSurfer(audioFile, intervals) {
+            let seenCount = 0;
+            let streak = 0;
+            let lastStreakChange = 0;
 
-        const regions = WaveSurfer.Regions.create();
+            if (wavesurfer) {
+                wavesurfer.destroy()
+                document.getElementById('waveform').innerHTML = ""
+                document.getElementById('spectrogram').innerHTML = ""
+                document.getElementById('currentTime').textContent = "0:00:000"
+                document.getElementById('seenCount').textContent = "Blastbeat count: 0"
+            }
 
-        const spectrogram = WaveSurfer.Spectrogram.create({
-            container: '#spectrogram',
-            labels: true,
-            frequencyMax: 600,
-            scale: 'mel',
-            rangeDB: 60,
-            gainDB: 20,
-            windowFunc: 'hann',
-            colorMap: 'roseus',
-            fftSamples: 256
-        })
-        spectrogram.on('render', () => ls.style.display = 'none')
+            const lw = document.getElementById('loadingWaveform');
+            const ls = document.getElementById('loadingSpectrogram');
+            lw.style.display = 'block';
+            ls.style.display = 'block';
 
-        wavesurfer = WaveSurfer.create({
-            container: '#waveform',
-            waveColor: '#000',
-            progressColor: '#888',
-            cursorColor: '#f00',
-            height: 150,
-            plugins: [regions, spectrogram]
-        })
-        wavesurfer.load(audioFile)
+            const regions = WaveSurfer.Regions.create();
 
-        wavesurfer.on('ready', () => {
-            lw.style.display = 'none'
-            document.getElementById('explainer').style.display = 'none'
-            document.getElementById('controls').style.display = 'block'
-            audioReady = true
-            intervals.forEach(({ start_time, end_time }) =>
-                regions.addRegion({
-                    start: start_time,
-                    end: end_time,
-                    color: 'rgba(2,247,7,0.3)',
-                    drag: false,
-                    resize: false
-                })
-            )
-        })
-        wavesurfer.on('timeupdate', t => {
-            const m = Math.floor(t / 60);
-            const s = Math.floor(t % 60);
-            const ms = Math.floor((t % 1) * 1000);
+            const spectrogram = WaveSurfer.Spectrogram.create({
+                container: '#spectrogram',
+                labels: true,
+                frequencyMax: 600,
+                scale: 'mel',
+                rangeDB: 60,
+                gainDB: 20,
+                windowFunc: 'hann',
+                colorMap: 'roseus',
+                fftSamples: 256
+            })
+            spectrogram.on('render', () => ls.style.display = 'none')
 
-            // Update time display
-            document.getElementById('currentTime').textContent =
-                `${m}:${s.toString().padStart(2, '0')}:${ms.toString().padStart(3, '0')}`;
+            wavesurfer = WaveSurfer.create({
+                container: '#waveform',
+                waveColor: '#000',
+                progressColor: '#888',
+                cursorColor: '#f00',
+                height: 150,
+                plugins: [regions, spectrogram]
+            })
+            wavesurfer.load(audioFile)
 
-            // Update blastbeat count
-            const newCount = intervals.filter(b => t > b.start_time).length;
-            if (newCount !== seenCount) {
-                streak++;
-                lastStreakChange = t;
-                seenCount = newCount;
-                const countEl = document.getElementById('seenCount');
-                countEl.textContent = `Blastbeat count: ${seenCount} ${streak > 3 ? '🔥🔥🔥' : ''} ${streak > 10 ? '🥵🥵🥵' : ''}`;
-                countEl.classList.remove('blastbeat-animate');
-                void countEl.offsetWidth;
-                countEl.classList.add('blastbeat-animate');
-            }else{
-                if (t - lastStreakChange >= 4) {
-                    streak = 0;
-                    document.getElementById('seenCount').textContent = `Blastbeat count: ${seenCount}`;
+            wavesurfer.on('ready', () => {
+                lw.style.display = 'none'
+                document.getElementById('explainer').style.display = 'none'
+                document.getElementById('controls').style.display = 'block'
+                audioReady = true
+                intervals.forEach(({ start_time, end_time }) =>
+                    regions.addRegion({
+                        start: start_time,
+                        end: end_time,
+                        color: 'rgba(2,247,7,0.3)',
+                        drag: false,
+                        resize: false
+                    })
+                )
+            })
+            wavesurfer.on('timeupdate', t => {
+                const m = Math.floor(t / 60);
+                const s = Math.floor(t % 60);
+                const ms = Math.floor((t % 1) * 1000);
+
+                // Update time display
+                document.getElementById('currentTime').textContent =
+                    `${m}:${s.toString().padStart(2, '0')}:${ms.toString().padStart(3, '0')}`;
+
+                // Update blastbeat count
+                const newCount = intervals.filter(b => t > b.start_time).length;
+                if (newCount !== seenCount) {
+                    streak++;
+                    lastStreakChange = t;
+                    seenCount = newCount;
+                    const countEl = document.getElementById('seenCount');
+                    countEl.textContent = `Blastbeat count: ${seenCount} ${streak > 3 ? '🔥🔥🔥' : ''} ${streak > 10 ? '🥵🥵🥵' : ''}`;
+                    countEl.classList.remove('blastbeat-animate');
+                    void countEl.offsetWidth;
+                    countEl.classList.add('blastbeat-animate');
+                } else {
+                    if (t - lastStreakChange >= 4) {
+                        streak = 0;
+                        document.getElementById('seenCount').textContent = `Blastbeat count: ${seenCount}`;
+                    }
                 }
+            })
+
+            document.getElementById('waveform').addEventListener('wheel', handleWheelZoom, { passive: false });
+            document.getElementById('spectrogram').addEventListener('wheel', handleWheelZoom, { passive: false });
+        }
+
+
+        async function loadZip(zipFile) {
+            const zip = await JSZip.loadAsync(zipFile)
+            const jsonFile = Object.keys(zip.files).find(n => n.endsWith('.json'))
+            if (!jsonFile) return alert("No JSON found in zip")
+            const config = JSON.parse(await zip.files[jsonFile].async('string'))
+            const intervals = config.blast_beats || []
+            const trackType = document.querySelector('input[name="trackType"]:checked').value
+            let audioFile = null
+            if (trackType === "drums") {
+                audioFile = Object.keys(zip.files).find(n => /_drums\.(mp3|wav)$/i.test(n))
+                if (!audioFile) return alert("Drums-only file (_drums) not found in zip")
+            } else {
+                audioFile = Object.keys(zip.files).find(n => /\.(mp3|wav)$/i.test(n) && !/_drums\./i.test(n))
+            }
+            if (!audioFile) return alert("No audio file found in zip")
+            const audioURL = URL.createObjectURL(await zip.files[audioFile].async('blob'))
+            document.getElementById('audioPath').textContent = "Track: " + audioFile
+            if (config.snare_frequency !== undefined)
+                document.getElementById('snareFreq').textContent = "| Snare drum freq: " + config.snare_frequency.toFixed(2) + " Hz"
+            if (config.bass_drum_frequency !== undefined)
+                document.getElementById('bassdrumFreq').textContent = "| Bass drum freq: " + config.bass_drum_frequency.toFixed(2) + " Hz"
+            initWaveSurfer(audioURL, intervals)
+        }
+
+        document.getElementById('zipInput').addEventListener('change', e => {
+            const f = e.target.files[0]
+            if (!f) return
+            currentZipFile = f
+            loadZip(f)
+        })
+
+        document.querySelectorAll('input[name="trackType"]').forEach(r =>
+            r.addEventListener('change', () => currentZipFile && loadZip(currentZipFile))
+        )
+
+        document.addEventListener('keydown', e => {
+            if (e.code === 'Space' && audioReady) {
+                e.preventDefault()
+                wavesurfer.playPause()
             }
         })
 
-        document.getElementById('waveform').addEventListener('wheel', handleWheelZoom, { passive: false });
-        document.getElementById('spectrogram').addEventListener('wheel', handleWheelZoom, { passive: false });
-    }
+        document.getElementById('playPauseBtn').addEventListener('click', () => {
+            if (audioReady) wavesurfer.playPause()
+        })
 
+        document.getElementById('zoomInBtn').addEventListener('click', () => {
+            zoomLevel = Math.min(200, zoomLevel + 10)
+            applyZoom()
+        })
 
-    async function loadZip(zipFile) {
-        const zip = await JSZip.loadAsync(zipFile)
-        const jsonFile = Object.keys(zip.files).find(n => n.endsWith('.json'))
-        if (!jsonFile) return alert("No JSON found in zip")
-        const config = JSON.parse(await zip.files[jsonFile].async('string'))
-        const intervals = config.blast_beats || []
-        const trackType = document.querySelector('input[name="trackType"]:checked').value
-        let audioFile = null
-        if (trackType === "drums") {
-            audioFile = Object.keys(zip.files).find(n => /_drums\.(mp3|wav)$/i.test(n))
-            if (!audioFile) return alert("Drums-only file (_drums) not found in zip")
-        } else {
-            audioFile = Object.keys(zip.files).find(n => /\.(mp3|wav)$/i.test(n) && !/_drums\./i.test(n))
-        }
-        if (!audioFile) return alert("No audio file found in zip")
-        const audioURL = URL.createObjectURL(await zip.files[audioFile].async('blob'))
-        document.getElementById('audioPath').textContent = "Track: " + audioFile
-        if (config.snare_frequency !== undefined)
-            document.getElementById('snareFreq').textContent = "| Snare drum freq: " + config.snare_frequency.toFixed(2) + " Hz"
-        if (config.bass_drum_frequency !== undefined)
-            document.getElementById('bassdrumFreq').textContent = "| Bass drum freq: " + config.bass_drum_frequency.toFixed(2) + " Hz"
-        initWaveSurfer(audioURL, intervals)
-    }
-
-    document.getElementById('zipInput').addEventListener('change', e => {
-        const f = e.target.files[0]
-        if (!f) return
-        currentZipFile = f
-        loadZip(f)
-    })
-
-    document.querySelectorAll('input[name="trackType"]').forEach(r =>
-        r.addEventListener('change', () => currentZipFile && loadZip(currentZipFile))
-    )
-
-    document.addEventListener('keydown', e => {
-        if (e.code === 'Space' && audioReady) {
-            e.preventDefault()
-            wavesurfer.playPause()
-        }
-    })
-
-    document.getElementById('playPauseBtn').addEventListener('click', () => {
-        if (audioReady) wavesurfer.playPause()
-    })
-
-    document.getElementById('zoomInBtn').addEventListener('click', () => {
-        zoomLevel = Math.min(200, zoomLevel + 10)
-        applyZoom()
-    })
-
-    document.getElementById('zoomOutBtn').addEventListener('click', () => {
-        zoomLevel = Math.max(0, zoomLevel - 10)
-        applyZoom()
-    })
-</script>
+        document.getElementById('zoomOutBtn').addEventListener('click', () => {
+            zoomLevel = Math.max(0, zoomLevel - 10)
+            applyZoom()
+        })
+    </script>
 </body>
+
 </html>
