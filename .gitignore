@@ -8,3 +8,4 @@ output/*
 download_cache.json
 *.csv
 dist
+__pycache__
