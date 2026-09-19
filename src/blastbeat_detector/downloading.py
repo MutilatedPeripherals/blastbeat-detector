@@ -11,16 +11,18 @@ def download_from_youtube_as_mp3(url: str) -> tuple[bool, Path | None]:
         raise ValueError("The provided URL is not a valid YouTube video URL.")
 
     cache_file = Path.cwd().resolve() / "download_cache.json"
+    cache = {}
     if cache_file.exists():
-        with open(cache_file, "r") as f:
-            cache = json.load(f)
+        try:
+            with open(cache_file, "r") as f:
+                cache = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            cache = {}
         if url in cache:
             cached_path = Path(cache[url])
             if cached_path.exists():
                 print("Using cached download.")
                 return True, cached_path
-    else:
-        cache = {}
 
     output_folder = Path.cwd().resolve() / "tmp"
     output_folder.mkdir(exist_ok=True)
@@ -36,6 +38,7 @@ def download_from_youtube_as_mp3(url: str) -> tuple[bool, Path | None]:
         "outtmpl": temp_path,
         "noplaylist": True,
         "quiet": False,
+        "remote_components": ["ejs:github"],
     }
 
     try:
@@ -54,8 +57,7 @@ def download_from_youtube_as_mp3(url: str) -> tuple[bool, Path | None]:
                 downloaded_path.rename(final_path)
 
             cache[url] = str(final_path)
-            with open(cache_file, "w") as f:
-                json.dump(cache, f, indent=2)
+            cache_file.write_text(json.dumps(cache, indent=2))
 
             return True, final_path
 
